@@ -7,6 +7,7 @@
 | Arynal Haq Syafi'i | 103072400155 | Pitfall 1 — The Network is Reliable] |
 | Melvin Crisna Martin Adoe | 103072400146 | Pitfall 2 — Latency is Zero |
 | Revaldi Ramadhan Nugraha | 103072400059 | Pitfall 3 — Single Point of Failure dan Masalah Skalabilitas |
+| I Wayan Adnyana Kusuma Wijaya  | 103072400040 | Pitfall 4  |
 
 ## Pitfall 1 — The Network is Reliable — ditulis oleh Revaldi Ramadhan Nugraha
 
