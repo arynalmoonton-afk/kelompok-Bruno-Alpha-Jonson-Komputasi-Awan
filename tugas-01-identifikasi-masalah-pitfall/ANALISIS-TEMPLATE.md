@@ -9,7 +9,7 @@
 | Revaldi Ramadhan Nugraha | 103072400059 | Pitfall 3 — Single Point of Failure dan Masalah Skalabilitas |
 | I Wayan Adnyana Kusuma Wijaya  | 103072400040 | Pitfall 4 — Cascading Failure / Kegagalan Berantai |
 
-## Pitfall 1 — The Network is Reliable — ditulis oleh Revaldi Ramadhan Nugraha
+## Pitfall 1 — The Network is Reliable — ditulis oleh — Revaldi Ramadhan Nugraha
 
 
 **Bukti di skenario:** 
@@ -93,7 +93,7 @@ Pemisahan service dapat meningkatkan skalabilitas dan mengurangi dampak kegagala
 
 ---
 
-## Pitfall 4 Cascading Failure / Kegagalan Berantai ditulis oleh I Wayan Adnyana Kusuma Wijaya 
+## Pitfall 4 Cascading Failure / Kegagalan Berantai ditulis oleh — I Wayan Adnyana Kusuma Wijaya 
 
 
 **Bukti di skenario:** 
