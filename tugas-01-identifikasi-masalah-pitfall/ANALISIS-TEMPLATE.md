@@ -1,6 +1,6 @@
 # Tugas 1 — Analisis Pitfall FoodGo
 
-**Kelompok:** [nama kelompok]
+**Kelompok:** [RAHULLLLLLL, OH IYA BANG]
 
 | Nama | NIM | Kontribusi |
 |---|---|---|
@@ -9,7 +9,29 @@
 | Revaldi Ramadhan Nugraha | 103072400059 | Pitfall 3 — Single Point of Failure dan Masalah Skalabilitas |
 | I Wayan Adnyana Kusuma Wijaya  | 103072400040 | Pitfall 4 — Cascading Failure / Kegagalan Berantai |
 
+## Pitfall 1 — The Network is Reliable — ditulis oleh Revaldi Ramadhan Nugraha
 
+
+**Bukti di skenario:** 
+Pada skenario disebutkan bahwa kode FoodGo memiliki asumsi:
+
+> `# network is always reliable, no need for retry`
+
+Hal tersebut menunjukkan bahwa sistem menganggap komunikasi antar komponen/service akan selalu berhasil dan tidak memerlukan mekanisme penanganan kegagalan komunikasi.
+
+**Kenapa ini keliru:** 
+Dalam sistem terdistribusi, komunikasi antar service menggunakan jaringan yang dapat mengalami gangguan. Request dapat gagal, koneksi dapat terputus, atau service tujuan tidak memberikan respons. Karena itu, sistem tidak dapat menganggap setiap komunikasi pasti berhasil.
+
+**Dampak ke FoodGo:** 
+Ketika trafik meningkat pada jam makan siang atau saat promo, kemungkinan terjadinya kegagalan komunikasi juga dapat meningkat. Jika request dari modul pesanan ke service lain gagal dan tidak terdapat mekanisme retry atau penanganan error, proses pemesanan dapat gagal atau menghasilkan timeout.
+
+Kondisi ini dapat menyebabkan pengguna mengalami kegagalan saat melakukan pemesanan, sementara sistem juga harus menangani banyak request yang masuk secara bersamaan.
+
+**Solusi:** 
+FoodGo dapat menerapkan **timeout dan retry dengan exponential backoff** pada komunikasi antar service. Selain itu, error dari service tujuan perlu ditangani sehingga kegagalan satu request tidak langsung menyebabkan seluruh proses aplikasi bermasalah.
+
+**Trade-off:** 
+Retry tidak selalu gratis. Jika service tujuan sedang mengalami overload, terlalu banyak retry justru dapat menambah jumlah request dan memperparah beban. Oleh karena itu, retry perlu dibatasi, misalnya dengan jumlah percobaan maksimum dan backoff.
 
 ---
 
