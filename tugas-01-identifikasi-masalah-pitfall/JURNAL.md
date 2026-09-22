@@ -15,8 +15,8 @@
 ## Review Silang
 - Reynal mengomentari analisis Melvin: Analisis latency is zero sudah sesuai dengan skenario karena modul pesanan menunggu respons pembayaran tanpa batas waktu. Disarankan agar dampaknya terhadap aplikasi yang menjadi lambat dijelaskan lebih jelas.
 - Melvin mengomentari analisis Reval: Analisis single point of failure sudah sesuai karena satu server menangani beberapa modul dalam satu proses monolitik. Disarankan agar dampak kegagalan server terhadap beberapa fungsi FoodGo dijelaskan lebih konkret.
-- Reval mengomentari analisis I Adnyana Kusuma Wijaya: Analisis cascading failure sudah relevan karena masalah pada satu bagian dapat memengaruhi bagian lain. Disarankan agar hubungan antara permintaan yang tertahan dan meningkatnya beban server dijelaskan lebih jelas.
-- I Adnyana Kusuma Wijaya mengomentari analisis Reynal: Analisis the network is reliable sudah sesuai dengan skenario karena terdapat asumsi jaringan selalu dapat diandalkan. Disarankan agar percobaan ulang dilakukan secara terbatas agar tidak menambah beban sistem.
+- Reval mengomentari analisis Wayan: Analisis cascading failure sudah relevan karena masalah pada satu bagian dapat memengaruhi bagian lain. Disarankan agar hubungan antara permintaan yang tertahan dan meningkatnya beban server dijelaskan lebih jelas.
+- Wayan mengomentari analisis Reynal: Analisis the network is reliable sudah sesuai dengan skenario karena terdapat asumsi jaringan selalu dapat diandalkan. Disarankan agar percobaan ulang dilakukan secara terbatas agar tidak menambah beban sistem.
 ## Log Penggunaan AI (Level 2)
 
 > Wajib diisi sesuai kebijakan Level 2 di [`../RUBRIK-UMUM.md`](../RUBRIK-UMUM.md). Tulis "Tidak memakai AI" pada baris pertama jika memang tidak dipakai. Hanya untuk brainstorming ide/outline — bukan untuk kode/analisis/teks akhir.
