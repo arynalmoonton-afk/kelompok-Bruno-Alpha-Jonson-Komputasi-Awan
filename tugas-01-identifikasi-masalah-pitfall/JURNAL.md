@@ -2,13 +2,15 @@
 
 > Isi jurnal ini selama proses diskusi berlangsung, bukan ditulis ulang rapi di akhir. Tulis dengan gaya bebas — poin diskusi, kebuntuan, perubahan pikiran.
 
-## Sabtu, 19 September 2026
+## [Tanggal diskusi 1 Sabtu, 19 September 2026]
 - Peserta: Reynal, Melvin, Reval, Wayan
 - Poin diskusi: Menentukan pitfall yang paling sesuai dengan kondisi FoodGo. Kelompok kami memilih the network is reliable, latency is zero, single point of failure, dan cascading failure karena pada skenario terdapat asumsi jaringan selalu dapat diandalkan, modul pesanan menunggu respons pembayaran tanpa batas waktu, serta satu server menangani modul pesanan, pembayaran, dan notifikasi kurir dalam satu proses monolitik sehingga dapat menyebabkan kegagalan berantai ketika salah satu bagian mengalami masalah.
 - Perbedaan pendapat (jika ada): ...
 
-## [Tanggal diskusi 2]
-- ...
+## [Tanggal diskusi 2 Selasa, 22 September 2026]
+- Peserta: Reynal, Melvin, Reval, Wayan
+- Poin diskusi: Memantapkan empat pitfall yang dipilih serta argumen dan solusi masing-masing agar sesuai dengan kondisi pada skenario FoodGo.
+- Perbedaan pendapat (jika ada): Tidak ada.
 
 ## Review Silang
 - Reynal mengomentari analisis Melvin: Analisis latency is zero sudah sesuai dengan skenario karena modul pesanan menunggu respons pembayaran tanpa batas waktu. Disarankan agar dampaknya terhadap aplikasi yang menjadi lambat dijelaskan lebih jelas.
@@ -21,7 +23,8 @@
 
 | Tanggal | Tool AI | Prompt yang diberikan | Ringkasan saran/ide AI | Bagaimana diolah jadi tulisan/kode sendiri |
 |---|---|---|---|---|
-| 19 September 2026 | ChatGPT | Membantu mengidentifikasi pitfall yang sesuai dengan skenario FoodGo dan membagi topik untuk 4 anggota kelompok. | AI memberikan beberapa pilihan pitfall yang relevan, seperti *the network is reliable*, *latency is zero*, *single point of failure*, dan *cascading failure*. | Kelompok mencocokkan kembali setiap pitfall dengan kondisi yang tertulis pada skenario dan membagi topik berdasarkan hasil diskusi kelompok. |
-| 19 September 2026 | ChatGPT | Membantu menyusun poin diskusi kelompok berdasarkan pitfall yang sudah dipilih. | AI memberikan contoh hubungan antara masalah jaringan, keterlambatan komunikasi, penggunaan satu server, dan kegagalan berantai. | Kelompok memilih poin yang sesuai dengan hasil pembahasan dan menyesuaikan bahasanya agar sesuai dengan proses diskusi kelompok. |
-| 22 September 2026 | ChatGPT | Membantu menyusun format review silang untuk analisis masing-masing anggota. | AI memberikan contoh masukan yang dapat digunakan untuk meninjau analisis anggota lain, seperti kesesuaian dengan skenario dan kejelasan dampak. | Kelompok menyesuaikan masukan dengan isi analisis masing-masing anggota dan mencatatnya pada bagian Review Silang. |
-| 22 September 2026 | ChatGPT | Membantu mengecek dan merapikan struktur JURNAL.md serta log penggunaan AI. | AI memberikan saran mengenai urutan bagian jurnal dan cara mencatat penggunaan AI sesuai format yang diberikan. | Kelompok menggunakan saran tersebut sebagai panduan format, kemudian menyesuaikan isi berdasarkan kegiatan dan hasil diskusi kelompok sendiri. |
+| 19 September 2026 | ChatGPT | Dari skenario FoodGo ini, pitfall apa saja yang paling sesuai? Kami ingin membagi analisis untuk 4 anggota kelompok. | AI menyarankan beberapa masalah yang dapat dikaitkan dengan skenario, termasuk *the network is reliable*, *latency is zero*, *single point of failure*, dan *cascading failure*. | Kelompok mencocokkan kembali setiap masalah dengan kondisi yang benar-benar disebutkan dalam skenario dan mendiskusikannya sebelum menentukan pembagian tugas. |
+| 19 September 2026 | ChatGPT | Bisa bantu jelaskan keempat pitfall tersebut sesuai dengan format tugas, terutama bagian bukti dari skenario, dampak, solusi, dan trade-off? | AI memberikan kerangka pembahasan untuk masing-masing pitfall berdasarkan bagian-bagian yang diminta dalam tugas. | Kelompok menggunakan kerangka tersebut sebagai bahan diskusi, kemudian mengembangkan analisis dan menyesuaikannya dengan pemahaman masing-masing anggota. |
+| 19 September 2026 | ChatGPT | Apakah *single point of failure* dan *cascading failure* memang boleh digunakan untuk tugas ini, mengingat keduanya bukan bagian dari delapan *Fallacies*? | AI menjelaskan bahwa tugas juga memperbolehkan masalah desain sistem terdistribusi lain yang relevan, sehingga kedua masalah tersebut dapat digunakan selama dikaitkan dengan skenario. | Kelompok memeriksa kembali instruksi tugas dan menggunakan kedua masalah tersebut sebagai masalah desain tambahan, bukan sebagai bagian dari delapan *Fallacies*. |
+| 22 September 2026 | ChatGPT | Bisa bantu merapikan poin diskusi dan review silang untuk empat anggota supaya sesuai dengan format JURNAL.md? | AI memberikan contoh struktur poin diskusi dan review silang. | Kelompok menyesuaikan struktur tersebut dengan kegiatan diskusi dan hasil review yang dilakukan oleh anggota kelompok. |
+| 22 September 2026 | ChatGPT | Tolong bantu cek apakah kesimpulan kami sudah mencakup keempat masalah yang dianalisis dan apakah istilah teknisnya sudah konsisten. | AI membantu mengecek keterkaitan antara keempat masalah dengan kesimpulan serta menyarankan konsistensi penggunaan istilah. | Kelompok menggunakan saran tersebut untuk memperbaiki istilah dan memastikan kesimpulan tetap sesuai dengan hasil analisis kelompok. |
