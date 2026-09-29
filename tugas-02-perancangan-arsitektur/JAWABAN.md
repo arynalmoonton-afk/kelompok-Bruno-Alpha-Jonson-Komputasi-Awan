@@ -25,31 +25,31 @@ Kombinasi ini dipilih karena SOA membantu memisahkan fungsi utama FoodGo, sedang
 
 Berdasarkan rancangan arsitektur FoodGo, terdapat beberapa komponen utama:
 
-1. Pelanggan
+### 1. Pelanggan
 
 Pelanggan merupakan pengguna yang berinteraksi dengan sistem untuk melihat katalog restoran, memilih menu, membuat pesanan, dan mendapatkan informasi mengenai proses pesanannya.
 
-2. Service Katalog Resto
+### 2. Service Katalog Resto
 
 Service ini menangani informasi mengenai restoran dan menu yang tersedia. Pelanggan dapat meminta informasi katalog melalui service ini sebelum membuat pesanan.
 
-3. Service Pesanan
+### 3. Service Pesanan
 
 Service Pesanan menangani proses pembuatan dan pengelolaan pesanan. Service ini juga berinteraksi dengan Service Pembayaran dan mengirimkan event ke Message Broker setelah proses pesanan berhasil.
 
-4. Service Pembayaran
+### 4. Service Pembayaran
 
 Service Pembayaran bertanggung jawab untuk memproses dan memverifikasi pembayaran. Service ini memberikan hasil pembayaran kembali kepada Service Pesanan.
 
-5. Service Resto
+### 5. Service Resto
 
 Service Resto menangani informasi dan proses yang berkaitan dengan restoran, termasuk menerima informasi pesanan yang dikirim melalui mekanisme event.
 
-6. Service Kurir/Notifikasi
+### 6. Service Kurir/Notifikasi
 
 Service ini menangani proses yang berkaitan dengan kurir dan notifikasi. Service ini digunakan untuk proses penugasan kurir dan penyampaian informasi atau perubahan status kepada pihak yang membutuhkan.
 
-7. Message Broker
+### 7. Message Broker
 
 Message Broker menjadi perantara komunikasi Publish-Subscribe. Service yang menghasilkan event mengirimkannya ke Message Broker, kemudian Message Broker meneruskan event tersebut kepada service yang berlangganan event tersebut.
 
@@ -61,7 +61,7 @@ Skenario yang digunakan adalah:
 
 Pelanggan membuat pesanan → pembayaran → restoran menerima pesanan → kurir ditugaskan.
 
-3.1 Pelanggan melihat katalog
+### 3.1 Pelanggan melihat katalog
 
 Pelanggan meminta informasi restoran dan menu kepada Service Katalog Resto.
 
@@ -69,7 +69,7 @@ Jenis komunikasi: Sinkron / Request-Response.
 
 Service Katalog Resto memberikan informasi katalog sebagai response kepada pelanggan.
 
-3.2 Pelanggan membuat pesanan
+### 3.2 Pelanggan membuat pesanan
 
 Setelah memilih menu, pelanggan mengirim permintaan pembuatan pesanan kepada Service Pesanan.
 
@@ -77,7 +77,7 @@ Jenis komunikasi: Sinkron / Request-Response.
 
 Service Pesanan menerima request dan memproses pembuatan pesanan.
 
-3.3 Service Pesanan melakukan pembayaran
+### 3.3 Service Pesanan melakukan pembayaran
 
 Service Pesanan mengirim permintaan pembayaran kepada Service Pembayaran.
 
@@ -87,7 +87,7 @@ Service Pembayaran memproses pembayaran dan memberikan status pembayaran kembali
 
 Komunikasi ini bersifat sinkron karena Service Pesanan membutuhkan hasil pembayaran untuk menentukan apakah proses pesanan dapat dilanjutkan.
 
-3.4 Service Pesanan mengirim event
+### 3.4 Service Pesanan mengirim event
 
 Setelah pesanan berhasil diproses, Service Pesanan mengirim event OrderCreated melalui Message Broker.
 
@@ -95,7 +95,7 @@ Jenis komunikasi: Asinkron / Event.
 
 Service Pesanan tidak perlu melakukan pemanggilan langsung kepada setiap service yang membutuhkan informasi tersebut.
 
-3.5 Event diterima oleh service yang berlangganan
+### 3.5 Event diterima oleh service yang berlangganan
 
 Message Broker meneruskan event OrderCreated kepada service yang berlangganan sesuai kebutuhan pada diagram.
 
@@ -103,7 +103,7 @@ Jenis komunikasi: Asinkron / Publish-Subscribe.
 
 Dengan mekanisme ini, penerima event tidak perlu dipanggil secara langsung oleh Service Pesanan.
 
-3.6 Kurir ditugaskan
+### 3.6 Kurir ditugaskan
 
 Setelah proses terkait pesanan dan kurir dilakukan, Service Kurir/Notifikasi menghasilkan event CourierAssigned melalui Message Broker.
 
