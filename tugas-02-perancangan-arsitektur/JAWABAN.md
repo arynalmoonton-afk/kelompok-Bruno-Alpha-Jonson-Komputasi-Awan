@@ -27,34 +27,71 @@ Kombinasi ini dipilih karena SOA membantu memisahkan fungsi utama FoodGo, sedang
 Berdasarkan rancangan arsitektur FoodGo, terdapat beberapa komponen utama:
 
 ### 1. Pelanggan
+Pelanggan merupakan pengguna yang berinteraksi langsung dengan sistem FoodGo. Pelanggan dapat melihat daftar restoran dan menu, membuat pesanan, melakukan pembayaran, serta memperoleh informasi mengenai status pesanan.
 
-Pelanggan merupakan pengguna yang berinteraksi dengan sistem untuk melihat katalog restoran, memilih menu, membuat pesanan, dan mendapatkan informasi mengenai proses pesanannya.
+Interaksi pelanggan dengan sistem dilakukan melalui request kepada service yang sesuai. Misalnya, ketika pelanggan ingin melihat menu, request dikirimkan ke Service Katalog Resto. Ketika pelanggan ingin membuat pesanan, request dikirimkan ke Service Pesanan.
 
 ### 2. Service Katalog Resto
+Service Katalog Resto bertanggung jawab untuk menyediakan informasi mengenai restoran dan menu yang tersedia. Data yang dikelola dapat mencakup nama restoran, daftar menu, harga, ketersediaan menu, dan informasi pendukung lainnya.
 
-Service ini menangani informasi mengenai restoran dan menu yang tersedia. Pelanggan dapat meminta informasi katalog melalui service ini sebelum membuat pesanan.
+Service ini menerima request dari pelanggan dan memberikan response secara langsung.
+
+Jenis komunikasi: Sinkron / Request-Response.
+
+Contohnya, pelanggan meminta daftar menu pada suatu restoran. Service Katalog Resto mengambil data yang diperlukan kemudian mengirimkan informasi tersebut kembali kepada pelanggan.
 
 ### 3. Service Pesanan
+Service Pesanan merupakan service yang menangani proses utama pemesanan makanan. Service ini menerima pesanan dari pelanggan, mencatat detail pesanan, menghitung informasi pesanan, serta mengatur proses selanjutnya setelah pesanan dibuat.
 
-Service Pesanan menangani proses pembuatan dan pengelolaan pesanan. Service ini juga berinteraksi dengan Service Pembayaran dan mengirimkan event ke Message Broker setelah proses pesanan berhasil.
+Service Pesanan berkomunikasi secara sinkron dengan Service Pembayaran ketika membutuhkan proses pembayaran. Setelah pesanan berhasil dibuat dan pembayaran berhasil diproses, Service Pesanan menghasilkan event yang dikirimkan ke Message Broker.
+
+Jenis komunikasi:
+
+Pelanggan → Service Pesanan: Sinkron / Request-Response.
+
+Service Pesanan → Service Pembayaran: Sinkron / Request-Response.
+
+Service Pesanan → Message Broker: Asinkron / Event.
+
+Salah satu event yang dihasilkan adalah OrderCreated, yang menunjukkan bahwa pesanan telah berhasil dibuat dan dapat diproses oleh service lain yang membutuhkan informasi tersebut.
 
 ### 4. Service Pembayaran
+Service Pembayaran bertanggung jawab menangani proses pembayaran dan memberikan informasi mengenai hasil pembayaran kepada Service Pesanan.
 
-Service Pembayaran bertanggung jawab untuk memproses dan memverifikasi pembayaran. Service ini memberikan hasil pembayaran kembali kepada Service Pesanan.
+Ketika Service Pesanan mengirimkan request pembayaran, Service Pembayaran melakukan proses dan memberikan response berupa status pembayaran, misalnya berhasil atau gagal.
+
+Jenis komunikasi: Sinkron / Request-Response.
+
+Komunikasi ini menggunakan pola sinkron karena Service Pesanan membutuhkan hasil pembayaran untuk menentukan apakah proses pesanan dapat dilanjutkan. Jika pembayaran berhasil, pesanan dapat diteruskan ke tahap berikutnya. Jika pembayaran gagal, proses pesanan dapat dihentikan atau ditangani sesuai mekanisme yang telah ditentukan.
 
 ### 5. Service Resto
+Service Resto menangani proses yang berkaitan dengan pihak restoran setelah pesanan dibuat. Service ini dapat menerima informasi mengenai pesanan yang perlu diproses oleh restoran.
 
-Service Resto menangani informasi dan proses yang berkaitan dengan restoran, termasuk menerima informasi pesanan yang dikirim melalui mekanisme event.
+Informasi pesanan diterima melalui event yang disebarkan oleh Message Broker. Dengan demikian, Service Pesanan tidak perlu melakukan pemanggilan langsung ke Service Resto.
+
+Jenis komunikasi: Asinkron / Publish-Subscribe.
+
+Sebagai contoh, ketika Service Pesanan menghasilkan event OrderCreated, Service Resto yang berlangganan event tersebut dapat menerima informasi pesanan dan menggunakannya untuk memulai proses pada restoran.
 
 ### 6. Service Kurir/Notifikasi
+Service Kurir/Notifikasi menangani proses yang berkaitan dengan penugasan kurir dan penyampaian informasi status pesanan kepada pihak yang membutuhkan.
 
-Service ini menangani proses yang berkaitan dengan kurir dan notifikasi. Service ini digunakan untuk proses penugasan kurir dan penyampaian informasi atau perubahan status kepada pihak yang membutuhkan.
+Service ini dapat menerima event dari Message Broker untuk mengetahui adanya pesanan yang perlu diproses. Setelah kurir berhasil ditugaskan, service menghasilkan event CourierAssigned dan mengirimkannya kembali ke Message Broker.
+
+Jenis komunikasi: Asinkron / Publish-Subscribe.
+
+Event CourierAssigned kemudian dapat diterima oleh service lain yang membutuhkan informasi mengenai kurir yang telah ditugaskan, misalnya service yang menangani informasi status pesanan atau notifikasi kepada pelanggan.
 
 ### 7. Message Broker
+Message Broker berfungsi sebagai perantara komunikasi asinkron antara service dalam arsitektur FoodGo. Message Broker menerima event yang dipublikasikan oleh suatu service dan mendistribusikannya kepada service yang telah berlangganan event tersebut.
 
-Message Broker menjadi perantara komunikasi Publish-Subscribe. Service yang menghasilkan event mengirimkannya ke Message Broker, kemudian Message Broker meneruskan event tersebut kepada service yang berlangganan event tersebut.
+Pada rancangan ini, beberapa event yang digunakan antara lain:
 
-Secara keseluruhan, interaksi pada arsitektur menggunakan dua jenis komunikasi, yaitu sinkron (request-response) untuk proses yang membutuhkan respons langsung dan asinkron (event) melalui Message Broker untuk penyebaran informasi antar-service.
+OrderCreated, yaitu event yang menunjukkan bahwa pesanan telah berhasil dibuat.
+
+CourierAssigned, yaitu event yang menunjukkan bahwa kurir telah berhasil ditugaskan.
+
+Penggunaan Message Broker membuat publisher tidak perlu mengetahui secara langsung siapa saja subscriber dari suatu event. Hal ini mengurangi ketergantungan langsung antar-service dan memungkinkan service baru untuk berlangganan event tertentu tanpa harus mengubah service yang menghasilkan event.
 
 Berikut merupakan diagram arsitektur FoodGo:
 
