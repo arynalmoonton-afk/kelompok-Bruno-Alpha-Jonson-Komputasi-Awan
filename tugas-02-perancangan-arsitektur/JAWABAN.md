@@ -129,13 +129,13 @@ Pada bagian SOA, komunikasi antara Service Pesanan dan Service Pembayaran dilaku
 
 Sementara itu, penggunaan Publish-Subscribe membuat service tidak perlu mengetahui secara langsung seluruh service yang menerima suatu event. Service Pesanan cukup mengirim event ke Message Broker, kemudian broker mendistribusikannya kepada service yang membutuhkan.
 
-Trade-off SOA
+### Trade-off SOA
 
 Pemisahan service membuat sistem lebih terstruktur dan setiap service dapat dikembangkan secara lebih independen. Namun, komunikasi antar-service bergantung pada jaringan. Jika Service Pembayaran mengalami gangguan atau lambat memberikan respons, proses pada Service Pesanan juga dapat tertunda karena menggunakan komunikasi sinkron.
 
 Untuk mengurangi dampak tersebut, sistem dapat menggunakan mekanisme seperti timeout dan retry pada komunikasi antar-service.
 
-Trade-off Publish-Subscribe
+### Trade-off Publish-Subscribe
 
 Publish-Subscribe mengurangi ketergantungan langsung antar-service, tetapi membuat alur sistem menjadi lebih sulit dilacak karena proses tidak berjalan dalam satu jalur yang linear.
 
