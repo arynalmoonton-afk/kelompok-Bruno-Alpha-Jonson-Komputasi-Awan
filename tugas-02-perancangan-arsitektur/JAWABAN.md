@@ -111,16 +111,17 @@ Jenis komunikasi: Asinkron / Event.
 
 Event tersebut dapat digunakan oleh service yang membutuhkan informasi bahwa kurir telah ditugaskan.
 
-Ringkasan jenis komunikasi
-Komunikasi	Jenis
-Pelanggan → Service Katalog Resto	Sinkron / Request-Response
-Pelanggan → Service Pesanan	Sinkron / Request-Response
-Service Pesanan → Service Pembayaran	Sinkron / Request-Response
-Service Pembayaran → Service Pesanan	Sinkron / Response
-Service Pesanan → Message Broker	Asinkron / Event
-Message Broker → Service terkait	Asinkron / Publish-Subscribe
-Service Kurir/Notifikasi → Message Broker	Asinkron / Event
-Message Broker → Service terkait	Asinkron / Event
+### Ringkasan jenis komunikasi
+| Komunikasi | Jenis |
+|---|---|
+| Pelanggan → Service Katalog Resto | Sinkron / Request-Response |
+| Pelanggan → Service Pesanan | Sinkron / Request-Response |
+| Service Pesanan → Service Pembayaran | Sinkron / Request-Response |
+| Service Pembayaran → Service Pesanan | Sinkron / Response |
+| Service Pesanan → Message Broker | Asinkron / Event |
+| Message Broker → Service terkait | Asinkron / Publish-Subscribe |
+| Service Kurir/Notifikasi → Message Broker | Asinkron / Event |
+| Message Broker → Service terkait | Asinkron / Event |
 ## 4. Analisis
 
 Arsitektur ini mengatasi masalah coupling pada Tugas 1 karena sistem FoodGo yang sebelumnya berbentuk monolith dipisahkan menjadi beberapa service dengan tanggung jawab yang berbeda. Dengan pemisahan tersebut, perubahan pada satu bagian tidak harus menyebabkan seluruh sistem ikut berubah atau mengalami gangguan.
