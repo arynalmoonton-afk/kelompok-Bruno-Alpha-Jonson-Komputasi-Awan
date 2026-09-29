@@ -55,6 +55,10 @@ Message Broker menjadi perantara komunikasi Publish-Subscribe. Service yang meng
 
 Secara keseluruhan, interaksi pada arsitektur menggunakan dua jenis komunikasi, yaitu sinkron (request-response) untuk proses yang membutuhkan respons langsung dan asinkron (event) melalui Message Broker untuk penyebaran informasi antar-service.
 
+Berikut merupakan diagram arsitektur FoodGo:
+
+![Diagram Arsitektur FoodGo](diagram/Diagram%20Tanpa%20Judul.drawio.png)
+
 ## 3. Alur Skenario End-to-End
 
 Skenario yang digunakan adalah:
