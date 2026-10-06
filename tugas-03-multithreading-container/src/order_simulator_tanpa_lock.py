@@ -7,18 +7,15 @@ NUM_WORKERS = 10
 
 processed_count = 0
 
-lock = threading.Lock()
-
 
 def process_order(order_id: int) -> None:
     global processed_count
 
     time.sleep(random.uniform(0.001, 0.01))
 
-    with lock:
-        current_count = processed_count
-        time.sleep(0.001)
-        processed_count = current_count + 1
+    current_count = processed_count
+    time.sleep(0.001)
+    processed_count = current_count + 1
 
 
 def worker(order_ids: list) -> None:
@@ -53,12 +50,8 @@ def main() -> None:
     for t in threads:
         t.join()
 
-    print(f"Total pesanan diproses: {processed_count} (seharusnya {NUM_ORDERS})")
-
-    if processed_count != NUM_ORDERS:
-        print("RACE CONDITION TERDETEKSI")
-    else:
-        print("SEMUA PESANAN BERHASIL DIPROSES")
+    print(f"Total pesanan diproses: {processed_count}")
+    print(f"Seharusnya: {NUM_ORDERS}")
 
 
 if __name__ == "__main__":

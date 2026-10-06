@@ -53,12 +53,8 @@ def main() -> None:
     for t in threads:
         t.join()
 
-    print(f"Total pesanan diproses: {processed_count} (seharusnya {NUM_ORDERS})")
-
-    if processed_count != NUM_ORDERS:
-        print("RACE CONDITION TERDETEKSI")
-    else:
-        print("SEMUA PESANAN BERHASIL DIPROSES")
+    print(f"Total pesanan diproses: {processed_count}")
+    print(f"Seharusnya: {NUM_ORDERS}")
 
 
 if __name__ == "__main__":
