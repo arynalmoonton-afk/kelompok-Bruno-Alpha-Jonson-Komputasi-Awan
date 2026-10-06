@@ -6,8 +6,10 @@ WORKDIR /app
 COPY requirements.txt .
 # TODO 2: Tulis perintah untuk install dependency dari requirements.txt.
 
+RUN pip install --no-cache-dir -r requirements.tx
+
 COPY src/ ./src/
 
 # TODO 3: Tulis perintah default yang dijalankan saat container start,
 # yaitu menjalankan src/order_simulator.py dengan python3.
-CMD ["__LENGKAPI_INI__"]
+CMD ["python3", "src/order_simulator.py"]
