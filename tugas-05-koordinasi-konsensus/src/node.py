@@ -296,4 +296,18 @@ def main():
         daemon=True,
     ).start()
 
-   
+    # Beri waktu server lokal mulai aktif sebelum election awal.
+    time.sleep(1)
+    node.start_election()
+
+    try:
+        while True:
+            time.sleep(60)
+    except KeyboardInterrupt:
+        print(f"\n[Node {node.node_id}] Berhenti.")
+
+
+if __name__ == "__main__":
+    main()
+
+
