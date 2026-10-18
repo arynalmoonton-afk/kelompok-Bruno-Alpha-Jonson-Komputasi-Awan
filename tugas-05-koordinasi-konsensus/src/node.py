@@ -263,4 +263,50 @@ class Node:
                 if mulai_election:
                     self.start_election()
 
+def main():
+    parser = argparse.ArgumentParser(
+        description="Simulasi Bully Algorithm untuk FoodGo"
+    )
+    parser.add_argument("--id", type=int, required=True)
+    parser.add_argument("--port", type=int, required=True)
+    parser.add_argument(
+        "--peers",
+        type=str,
+        required=True,
+        help="Port peer dipisahkan koma, misalnya 5002,5003",
+    )
+    args = parser.parse_args()
+
+    peer_ports = [
+        int(port.strip())
+        for port in args.peers.split(",")
+        if port.strip()
+    ]
+    peers = {port - 5000: port for port in peer_ports}
+
+    node = Node(args.id, args.port, peers)
+
+    threading.Thread(
+        target=node.start_server,
+        daemon=True,
+    ).start()
+
+    threading.Thread(
+        target=node.monitor_leader,
+        daemon=True,
+    ).start()
+
+    # Beri waktu server lokal mulai aktif sebelum election awal.
+    time.sleep(1)
+    node.start_election()
+
+    try:
+        while True:
+            time.sleep(60)
+    except KeyboardInterrupt:
+        print(f"\n[Node {node.node_id}] Berhenti.")
+
+
+if __name__ == "__main__":
+    main()
 
