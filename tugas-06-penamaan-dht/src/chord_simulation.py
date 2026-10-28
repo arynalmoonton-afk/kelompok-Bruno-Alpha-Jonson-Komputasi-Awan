@@ -138,3 +138,5 @@ def main():
     print("kurir-002 ->", ring.lookup("kurir-002"))
 
 
+if __name__ == "__main__":
+    main()
