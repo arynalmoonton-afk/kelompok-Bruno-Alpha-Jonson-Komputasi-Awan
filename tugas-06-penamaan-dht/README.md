@@ -32,17 +32,17 @@ python3 src/chord_simulation.py
 
 ## Jawaban
 
-### 1. Analisis DHT/Chord Dibandingkan Flat Naming dan DNS Konvensional (Arynal Haq Syafi'i)
+### 1. Analisis DHT/Chord Dibandingkan Flat Naming dan DNS Konvensional (Arynal Haq Syafi'i & I Wayan Adnyana Kusuma)
 
 FoodGo membutuhkan mekanisme pemetaan ID Kurir yang bersifat tetap ke alamat IP yang dapat berubah karena kurir dapat berpindah lokasi atau jaringan. Oleh karena itu, diperlukan sistem penamaan yang mampu menangani perubahan alamat IP tanpa bergantung pada satu server pusat.
 
-#### Perbandingan dengan Flat Naming
+#### Perbandingan dengan Flat Naming (I Wayan Adnyana Kusuma)
 
 Pada pendekatan flat naming sederhana, pemetaan ID Kurir ke alamat IP dapat disimpan dalam sebuah tabel pusat. Pendekatan ini mudah diterapkan, tetapi seluruh proses pencarian dan pembaruan alamat IP bergantung pada satu komponen. Jika server pusat mengalami gangguan, proses pencarian alamat IP kurir dapat terhambat. Selain itu, meningkatnya jumlah kurir dapat menambah beban pada server tersebut sehingga berpotensi menjadi *bottleneck*.
 
 Sebaliknya, Chord DHT menggunakan *consistent hashing* untuk memetakan ID Kurir dan ID node ke ruang identitas yang sama. Setiap mapping menjadi tanggung jawab node *successor* yang ditentukan berdasarkan aturan Chord. Dengan pembagian tanggung jawab tersebut, penyimpanan dan pencarian mapping tidak harus bergantung pada satu tabel pusat.
 
-#### Perbandingan dengan DNS Konvensional
+#### Perbandingan dengan DNS Konvensional (Arynal Haq Syafi'i)
 
 DNS konvensional juga menggunakan sistem terdistribusi untuk menerjemahkan nama domain menjadi alamat IP. Namun, perubahan alamat IP membutuhkan pembaruan record DNS dan dapat dipengaruhi oleh mekanisme *caching* serta TTL. Akibatnya, pengguna masih mungkin memperoleh alamat IP lama selama informasi sebelumnya masih tersimpan dalam cache.
 
@@ -54,11 +54,11 @@ Berdasarkan perbandingan tersebut, Chord DHT merupakan pendekatan yang relevan u
 
 Mekanisme *successor* juga memungkinkan pencarian mapping berdasarkan ID Kurir tetap meskipun alamat IP dan susunan node mengalami perubahan.
 
-## 2. Analisis dan Visualisasi Ring Chord DHT (Arynal Haq Syafi'i)
+## 2. Analisis dan Visualisasi Ring Chord DHT (Arynal Haq Syafi'i & Melvin Crisna Martin Adoe)
 
 Bagian ini menjelaskan struktur ring Chord DHT serta pemetaan Courier ke node yang bertanggung jawab. Visualisasi dilakukan untuk melihat perubahan pemetaan ketika terjadi proses *join* dan *leave* node.
 
-### 2.1 Kondisi Awal Ring Chord
+### 2.1 Kondisi Awal Ring Chord (Arynal Haq Syafi'i)
 
 Pada kondisi awal, terdapat empat node dalam ring Chord, yaitu ID 40, 102, 136, dan 177. Setiap Courier dipetakan ke node *successor* berdasarkan Hash ID masing-masing.
 
@@ -105,7 +105,7 @@ graph TD
 
 Berdasarkan diagram, `node-surabaya-1` bertanggung jawab atas dua Courier, yaitu `kurir-uji-23` dan `kurir-003`. Sementara itu, setiap Courier lainnya dipetakan ke node *successor* masing-masing.
 
-### 2.2 Kondisi Setelah Node Join
+### 2.2 Kondisi Setelah Node Join (Melvin Crisna Martin Adoe)
 
 Pada tahap ini, node baru yaitu `node-medan-1` dengan ID 123 bergabung ke dalam ring Chord. Bergabungnya node tersebut menyebabkan perubahan tanggung jawab pemetaan Courier, khususnya pada `kurir-uji-23` dengan Hash ID 119.
 
@@ -168,7 +168,7 @@ flowchart TB
 
 Berdasarkan diagram, `node-medan-1` (ID 123) mengambil alih tanggung jawab `kurir-uji-23` dengan Hash ID 119 yang sebelumnya berada pada `node-surabaya-1` (ID 136). Hal ini terjadi karena ID 123 merupakan node successor pertama yang lebih besar atau sama dengan Hash ID 119. Sementara itu, pemetaan Courier lainnya tetap sama.
 
-### 2.3 Kondisi Setelah Node Leave
+### 2.3 Kondisi Setelah Node Leave (Melvin Crisna Martin Adoe)
 
 Pada tahap ini, `node-jakarta-1` dengan ID 177 meninggalkan jaringan. Setelah node tersebut keluar, ring Chord memiliki empat node aktif dan terjadi perubahan tanggung jawab pemetaan Courier.
 
@@ -218,6 +218,23 @@ graph TD
 ```
 
 Berdasarkan diagram, `kurir-leave-14` dengan Hash ID 151 yang sebelumnya berada pada `node-jakarta-1` (ID 177) kini berpindah ke `node-bandung-1` (ID 40) sebagai *successor* berikutnya dalam ring. Pemetaan Courier lainnya tetap sama seperti pada kondisi setelah node join.
+
+## 3. Analisis Hasil Simulasi (I Wayan Adnyana Kusuma Wijaya & Revaldi Ramadhan Nugraha) 
+
+### 3.1 Hasil Sebelum dan Sesudah Node Baru Bergabung (I Wayan Adnyana Kusuma Wijaya)
+
+Sebelum proses join, node ID 123 belum tersedia di dalam ring. Courier `kurir-uji-23` memiliki hash 119, sehingga successor yang bertanggung jawab adalah node ID 136.
+
+Setelah `node-medan-1` dengan ID 123 bergabung, successor pertama yang memiliki ID lebih besar atau sama dengan 119 adalah node ID 123. Dengan demikian, tanggung jawab mapping `kurir-uji-23` berpindah dari node ID 136 ke node ID 123.
+
+**Bukti output program:**
+
+```text
+--- Node baru bergabung ---
+Node 'node-medan-1' (id=123) bergabung, alamat 10.0.0.5
+  Mapping kurir-uji-23 (192.168.1.23) berpindah ke node 123
+kurir-uji-23 -> 192.168.1.23
+```
 
 ## Struktur Submission
 
