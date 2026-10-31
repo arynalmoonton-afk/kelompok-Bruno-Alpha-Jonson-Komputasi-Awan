@@ -105,6 +105,120 @@ graph TD
 
 Berdasarkan diagram, `node-surabaya-1` bertanggung jawab atas dua Courier, yaitu `kurir-uji-23` dan `kurir-003`. Sementara itu, setiap Courier lainnya dipetakan ke node *successor* masing-masing.
 
+### 2.2 Kondisi Setelah Node Join
+
+Pada tahap ini, node baru yaitu `node-medan-1` dengan ID 123 bergabung ke dalam ring Chord. Bergabungnya node tersebut menyebabkan perubahan tanggung jawab pemetaan Courier, khususnya pada `kurir-uji-23` dengan Hash ID 119.
+
+**Gambar 2.2 Kondisi Setelah Node Join**
+
+```mermaid
+flowchart TB
+    subgraph Ring["CHORD DHT RING AFTER NODE JOIN"]
+        direction LR
+        nb["node-bandung-1<br>ID: 40"]
+        nj2["node-jakarta-2<br>ID: 102"]
+        nm["node-medan-1<br>ID: 123<br>🆕 NEW NODE"]
+        ns["node-surabaya-1<br>ID: 136"]
+        nj1["node-jakarta-1<br>ID: 177"]
+    end
+
+    subgraph Couriers["COURIER INFORMATION"]
+        direction TB
+        k2["kurir-002<br>Hash: 28<br>IP: 192.168.1.11"]
+        k1["kurir-001<br>Hash: 50<br>IP: 192.168.1.10"]
+        ku["kurir-uji-23<br>Hash: 119<br>IP: 192.168.1.23"]
+        k3["kurir-003<br>Hash: 132<br>IP: 192.168.1.12"]
+        kl["kurir-leave-14<br>Hash: 151<br>IP: 192.168.1.14"]
+    end
+
+    subgraph Changes["JOIN IMPACT ANALYSIS"]
+        direction TB
+        before["BEFORE JOIN:<br>kurir-uji-23 hash 119 → node-surabaya-1 ID 136"]
+        after["AFTER JOIN:<br>kurir-uji-23 hash 119 → node-medan-1 ID 123<br><br>Node ID 123 is first node ≥ hash 119"]
+    end
+
+    nb --> nj2
+    nj2 --> nm
+    nm --> ns
+    ns --> nj1
+    nj1 -->|Wrap-around| nb
+
+    k2 -. assigns .-> nb
+    k1 -. assigns .-> nj2
+    ku -. assigns .-> nm
+    k3 -. assigns .-> ns
+    kl -. assigns .-> nj1
+
+    classDef node fill:#242424,stroke:#FF1493,stroke-width:3px,color:#FFFFFF
+    classDef newNode fill:#242424,stroke:#FF1493,stroke-width:4px,color:#FF69B4
+    classDef courier fill:#242424,stroke:#FF69B4,stroke-width:2px,color:#FFFFFF
+    classDef change fill:#242424,stroke:#FF69B4,stroke-width:2px,color:#FFFFFF
+    classDef changeHL fill:#242424,stroke:#FF1493,stroke-width:3px,color:#FF69B4
+
+    class nb,nj2,ns,nj1 node
+    class nm newNode
+    class k2,k1,ku,k3,kl courier
+    class before change
+    class after changeHL
+
+    style Ring fill:#121212,stroke:#FF1493,color:#FFFFFF
+    style Couriers fill:#121212,stroke:#FF69B4,color:#FFFFFF
+    style Changes fill:#121212,stroke:#FF1493,color:#FFFFFF
+```
+
+Berdasarkan diagram, `node-medan-1` (ID 123) mengambil alih tanggung jawab `kurir-uji-23` dengan Hash ID 119 yang sebelumnya berada pada `node-surabaya-1` (ID 136). Hal ini terjadi karena ID 123 merupakan node successor pertama yang lebih besar atau sama dengan Hash ID 119. Sementara itu, pemetaan Courier lainnya tetap sama.
+
+### 2.3 Kondisi Setelah Node Leave
+
+Pada tahap ini, `node-jakarta-1` dengan ID 177 meninggalkan jaringan. Setelah node tersebut keluar, ring Chord memiliki empat node aktif dan terjadi perubahan tanggung jawab pemetaan Courier.
+
+**Gambar 2.3 Kondisi Setelah Node Leave**
+
+```mermaid
+graph TD
+    subgraph ring["CHORD DHT RING - AFTER NODE LEAVE"]
+        N40["node-bandung-1<br/>ID: 40"]
+        N102["node-jakarta-2<br/>ID: 102"]
+        N123["node-medan-1<br/>ID: 123"]
+        N136["node-surabaya-1<br/>ID: 136"]
+    end
+
+    subgraph couriers["COURIER MAPPING"]
+        C28["kurir-002<br/>Hash ID: 28<br/>IP: 192.168.1.11"]
+        C50["kurir-001<br/>Hash ID: 50<br/>IP: 192.168.1.10"]
+        C119["kurir-uji-23<br/>Hash ID: 119<br/>IP: 192.168.1.23"]
+        C132["kurir-003<br/>Hash ID: 132<br/>IP: 192.168.1.12"]
+        C151["kurir-leave-14<br/>Hash ID: 151<br/>IP: 192.168.1.14"]
+    end
+
+    N40 -->|Ring Link| N102
+    N102 -->|Ring Link| N123
+    N123 -->|Ring Link| N136
+    N136 -->|Ring Link| N40
+
+    C28 -.->|Responsible| N40
+    C50 -.->|Responsible| N102
+    C119 -.->|Responsible| N123
+    C132 -.->|Responsible| N136
+    C151 -.->|Responsible| N40
+
+    NOTE["Setelah node Jakarta-1 ID 177 meninggalkan jaringan, tanggung jawab untuk<br/>Courier dengan Hash ID 151 berpindah ke node-bandung-1 ID 40 sebagai successor<br/>berikutnya dalam ring. Node lainnya tetap mempertahankan tanggung jawab sesuai<br/>pemetaan sebelumnya."]
+
+    classDef nodeStyle fill:#242424,stroke:#FF1493,stroke-width:2px,color:#FFFFFF
+    classDef courierStyle fill:#242424,stroke:#FF69B4,stroke-width:2px,color:#FFFFFF
+    classDef noteStyle fill:#1a1a1a,stroke:#FF1493,stroke-width:1px,color:#FFFFFF
+    classDef ringGroup fill:none,stroke:#FF1493,stroke-width:2px
+    classDef courierGroup fill:none,stroke:#FF69B4,stroke-width:2px
+
+    class N40,N102,N123,N136 nodeStyle
+    class C28,C50,C119,C132,C151 courierStyle
+    class NOTE noteStyle
+    class ring ringGroup
+    class couriers courierGroup
+```
+
+Berdasarkan diagram, `kurir-leave-14` dengan Hash ID 151 yang sebelumnya berada pada `node-jakarta-1` (ID 177) kini berpindah ke `node-bandung-1` (ID 40) sebagai *successor* berikutnya dalam ring. Pemetaan Courier lainnya tetap sama seperti pada kondisi setelah node join.
+
 ## Struktur Submission
 
 ```
