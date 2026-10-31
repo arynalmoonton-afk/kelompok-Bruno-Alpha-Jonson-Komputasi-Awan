@@ -223,11 +223,9 @@ Berdasarkan diagram, `kurir-leave-14` dengan Hash ID 151 yang sebelumnya berada 
 
 ### 3.1 Hasil Sebelum dan Sesudah Node Baru Bergabung (I Wayan Adnyana Kusuma Wijaya)
 
-Sebelum proses join, node ID 123 belum tersedia di dalam ring. Courier `kurir-uji-23` memiliki hash 119, sehingga successor yang bertanggung jawab adalah node ID 136.
+Sebelum proses join, node ID 123 belum tersedia di dalam ring. Hash `kurir-uji-23` adalah 119, sehingga successor yang bertanggung jawab adalah node ID 136. Setelah `node-medan-1` (ID 123) bergabung, successor pertama yang memiliki ID lebih besar atau sama dengan 119 adalah node ID 123. Dengan demikian, tanggung jawab mapping berpindah dari node ID 136 ke node ID 123.
 
-Setelah `node-medan-1` dengan ID 123 bergabung, successor pertama yang memiliki ID lebih besar atau sama dengan 119 adalah node ID 123. Dengan demikian, tanggung jawab mapping `kurir-uji-23` berpindah dari node ID 136 ke node ID 123.
-
-**Bukti output program:**
+**Output program:**
 
 ```text
 --- Node baru bergabung ---
@@ -235,6 +233,45 @@ Node 'node-medan-1' (id=123) bergabung, alamat 10.0.0.5
   Mapping kurir-uji-23 (192.168.1.23) berpindah ke node 123
 kurir-uji-23 -> 192.168.1.23
 ```
+
+### 3.2 Hasil Sebelum dan Sesudah Node Keluar (Revaldi Ramadhan Nugraha)
+
+Sebelum proses leave, `kurir-leave-14` memiliki hash 151 dan successor node ID 177 (`node-jakarta-1`). Setelah node ID 177 keluar dari ring, tidak ada lagi node dengan ID lebih besar atau sama dengan 151. Oleh karena itu, fungsi `find_successor()` melakukan mekanisme *wrap-around* ke node dengan ID terkecil, yaitu node ID 40 (`node-bandung-1`). Dengan demikian, tanggung jawab mapping berpindah dari node ID 177 ke node ID 40.
+
+**Output program:**
+
+```text
+--- Sebuah node keluar ---
+Node 'node-jakarta-1' (id=177) keluar dari ring
+  Mapping kurir-leave-14 (192.168.1.14) berpindah ke node 40
+kurir-leave-14 -> 192.168.1.14
+kurir-001 -> 192.168.1.10
+kurir-002 -> 192.168.1.11
+```
+
+Output tersebut membuktikan bahwa alamat IP kurir tetap dapat ditemukan setelah terjadi perubahan topologi. Hal yang berubah adalah node successor yang bertanggung jawab atas mapping.
+
+### 3.3 Tabel Ringkasan Perubahan (Revaldi Ramadhan Nugraha)
+
+Tabel berikut menunjukkan perubahan tanggung jawab mapping setelah proses join dan leave:
+
+| Perubahan Topologi | Mapping | Sebelum | Sesudah |
+|---|---|---|---|
+| `node-medan-1` (ID 123) bergabung | `kurir-uji-23` (hash 119) | Node 136 | Node 123 |
+| `node-jakarta-1` (ID 177) keluar | `kurir-leave-14` (hash 151) | Node 177 | Node 40 |
+
+**Ringkasan Tanggung Jawab Akhir**
+
+| Node | ID Node | Mapping Kurir yang Menjadi Tanggung Jawab |
+|---|---:|---|
+| `node-bandung-1` | 40 | `kurir-002` (hash 28), `kurir-leave-14` (hash 151) |
+| `node-jakarta-2` | 102 | `kurir-001` (hash 50) |
+| `node-medan-1` | 123 | `kurir-uji-23` (hash 119) |
+| `node-surabaya-1` | 136 | `kurir-003` (hash 132) |
+
+**Catatan Batasan Implementasi:**
+
+Pada implementasi ini, seluruh mapping disimpan dalam satu dictionary `self.data`. Oleh karena itu, perpindahan yang ditampilkan pada output merupakan perubahan tanggung jawab logis berdasarkan successor, bukan transfer data fisik antarserver. Simulasi ini juga belum mencakup komunikasi jaringan antarnode, *finger table*, dan replikasi data.
 
 ## Struktur Submission
 
